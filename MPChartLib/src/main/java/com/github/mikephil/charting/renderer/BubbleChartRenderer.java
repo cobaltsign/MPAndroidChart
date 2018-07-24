@@ -83,7 +83,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         // calcualte the full width of 1 step on the x-axis
         final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-        final float referenceSize = 3;//Math.min(maxBubbleHeight, maxBubbleWidth);
+        final float referenceSize = 30;//Math.min(maxBubbleHeight, maxBubbleWidth);
 
         for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
 
@@ -233,7 +233,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
             final float maxBubbleHeight = Math.abs(
                     mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-            final float referenceSize = 3;//Math.min(maxBubbleHeight, maxBubbleWidth);
+            final float referenceSize = 30;//Math.min(maxBubbleHeight, maxBubbleWidth);
 
             pointBuffer[0] = entry.getX();
             pointBuffer[1] = (entry.getY()) * phaseY;
