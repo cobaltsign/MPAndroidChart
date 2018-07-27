@@ -143,7 +143,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     @Override
     public int getColor(int index) {
-        int finalIndex = index < 0 ? 0 : index;
+        int finalIndex = index < 0 ? mColors.size() - 1 : index;
         return mColors.get(finalIndex % mColors.size());
     }
 
