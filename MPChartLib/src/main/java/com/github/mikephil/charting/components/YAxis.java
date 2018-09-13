@@ -336,7 +336,7 @@ public class YAxis extends AxisBase {
             maxWidth = Utils.convertDpToPixel(maxWidth);
 
         width = Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
-
+        width = (float) Utils.calcTextWidth(p, "-9.999m") + getXOffset() * 2f;
         return width;
     }
 
