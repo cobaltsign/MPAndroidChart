@@ -74,10 +74,40 @@ public class YAxis extends AxisBase {
     private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
 
     /**
+     * label's width property when static
+     * used to align multiple charts
+     */
+    private float labelWidth;
+
+    private LabelWidthStyle labelWidthStyle = LabelWidthStyle.DEFAULT;
+
+    public void setLabelWidth(float maxLabelWidth) {
+        this.labelWidth = maxLabelWidth;
+    }
+
+    public float getLabelWidth() {
+        return this.labelWidth;
+    }
+
+    public void setLabelWidthStyle(LabelWidthStyle labelWidthStyle) {
+        this.labelWidthStyle = labelWidthStyle;
+    }
+
+    public LabelWidthStyle getLabelWidthStyle() {
+        return this.labelWidthStyle;
+    }
+
+    /**
      * enum for the position of the y-labels relative to the chart
      */
     public enum YAxisLabelPosition {
         OUTSIDE_CHART, INSIDE_CHART
+    }
+
+    public enum LabelWidthStyle {
+        DEFAULT, //The default computed size
+        FIXED_DEFAULT, //The size is fix, and it's equal to the size of "-9.999m"
+        FIXED_INPUT // The label has a fixed size and is given as a property
     }
 
     /**
@@ -337,7 +367,22 @@ public class YAxis extends AxisBase {
 
         width = Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
 
-        return width;
+    switch (this.labelWidthStyle) {
+
+        case DEFAULT: {
+            //use the default computing
+            break;
+        }
+        case FIXED_DEFAULT: {
+            width = (float) Utils.calcTextWidth(p, "-9.999m") + getXOffset() * 2f;
+            break;
+        }
+        case FIXED_INPUT: {
+            width = this.labelWidth;
+            break;
+        }
+    }
+        return Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
     }
 
     /**

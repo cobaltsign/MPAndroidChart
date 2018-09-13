@@ -25,10 +25,12 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
     };
     private int mMaxLength = 5;
     private DecimalFormat mFormat;
+    private DecimalFormat mFormat2;
     private String mText = "";
 
     public LargeValueFormatter() {
         mFormat = new DecimalFormat("###E00");
+        mFormat2 = new DecimalFormat("0.##");
     }
 
     /**
@@ -77,24 +79,25 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
     }
 
     /**
-     * Formats each number properly. Special thanks to Roman Gromov
-     * (https://github.com/romangromov) for this piece of code.
+     * Formats each number properly.
      */
     private String makePretty(double number) {
 
-        String r = mFormat.format(number);
-
-        int numericValue1 = Character.getNumericValue(r.charAt(r.length() - 1));
-        int numericValue2 = Character.getNumericValue(r.charAt(r.length() - 2));
-        int combined = Integer.valueOf(numericValue2 + "" + numericValue1);
-
-        r = r.replaceAll("E[0-9][0-9]", mSuffix[combined / 3]);
-
-        while (r.length() > mMaxLength || r.matches("[0-9]+\\.[a-z]")) {
-            r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
+        if (Math.abs(number) < 1) {
+            return mFormat2.format(number);
         }
 
-        return r;
+        String formatted = mFormat.format(number);
+        int ePos = formatted.indexOf("E");
+        int exp = Integer.valueOf(formatted.substring(ePos + 1));
+        String part =
+                formatted.substring(0, formatted.contains("-") && formatted.contains(".")
+                        ?
+                        (formatted.indexOf('.')== ePos-2 ? ePos - 2 : ePos - 1)
+                        : ePos
+                );
+        String suffix = mSuffix[exp / 3];
+        return part + suffix;
     }
 
     public int getDecimalDigits() {
