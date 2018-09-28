@@ -6,6 +6,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Predefined value-formatter that formats large numbers in a pretty way.
@@ -29,7 +31,8 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
     private String mText = "";
 
     public LargeValueFormatter() {
-        mFormat = new DecimalFormat("###E00");
+        mFormat = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+        mFormat.applyPattern("#.#E00");
         mFormat2 = new DecimalFormat("0.##");
     }
 
@@ -91,13 +94,18 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
         int ePos = formatted.indexOf("E");
         int exp = Integer.valueOf(formatted.substring(ePos + 1));
         String part =
-                formatted.substring(0, formatted.contains("-") && formatted.contains(".")
-                        ?
-                        (formatted.indexOf('.')== ePos-2 ? ePos - 2 : ePos - 1)
-                        : ePos
+                formatted.substring(0, ePos
                 );
-        String suffix = mSuffix[exp / 3];
-        return part + suffix;
+        double d = Double.parseDouble(part);
+        String suffix = exp / 3 < 5 ? mSuffix[exp / 3] : "";
+        while (exp%3!=0) {
+            d*=10;
+            exp--;
+        }
+        String s = d+"";
+        if(s.endsWith(".0")) s = s.substring(0,s.length()-2);
+
+        return s + suffix;
     }
 
     public int getDecimalDigits() {
