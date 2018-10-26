@@ -38,18 +38,8 @@ public class DefaultAxisValueFormatter implements IAxisValueFormatter
                 b.append(".");
             b.append("0");
         }
-        char groupingSeparator = this.getGroupingCharacter();
-        StringBuilder pattern = new StringBuilder();
-        for(int i = 0; i < 3; i++) {
-            pattern.append("###");
-            pattern.append(groupingSeparator);
-        }
-        mFormat = new DecimalFormat(pattern + "##0" + b.toString());
-    }
-
-    private char getGroupingCharacter() {
-        DecimalFormatSymbols formatConfig = DecimalFormatSymbols.getInstance(new Locale("de", "ch"));
-        return formatConfig.getGroupingSeparator();
+        mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+        mFormat.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("de", "ch")));
     }
 
     @Override
