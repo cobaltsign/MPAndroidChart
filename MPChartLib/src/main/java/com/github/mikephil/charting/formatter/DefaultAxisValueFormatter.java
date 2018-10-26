@@ -28,15 +28,9 @@ public class DefaultAxisValueFormatter implements IAxisValueFormatter
      */
     public DefaultAxisValueFormatter(int digits) {
         this.digits = digits;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("en", "ch"));
+        mFormat = (DecimalFormat)nf;
+        mFormat.setMinimumFractionDigits(digits);
     }
 
     @Override
