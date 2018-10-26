@@ -3,6 +3,8 @@ package com.github.mikephil.charting.formatter;
 import com.github.mikephil.charting.components.AxisBase;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by philipp on 02/06/16.
